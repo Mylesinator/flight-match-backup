@@ -1,0 +1,10 @@
+[
+    {
+        "flightId": 1,
+        "origin": "Phoenix, Arizona",
+        "destination": "Houston, Texas",
+        "date": "10/24/24",
+        "time": "08:30",
+        "passengers": []
+    }
+]
