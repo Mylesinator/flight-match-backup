@@ -13,8 +13,10 @@ const clientPath = path.join(__dirname, '..', 'client/src');
 const dataPath = path.join(__dirname, 'data', 'users.json');
 const flightDataPath = path.join(__dirname, 'data', 'flights.json');
 const serverPublic = path.join(__dirname, 'public');
+const serverPages = path.join(__dirname, "public", "pages");
 // Middleware setup
 app.use(express.static(clientPath)); // Serve static files from client directory
+app.use(express.static(serverPages));
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(express.json()); // Parse JSON bodies
 
