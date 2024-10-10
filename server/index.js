@@ -158,6 +158,35 @@ app.get('/users', async (req, res) => {
     }
 });
 
+app.put("/user/add-flight", async (req, res) => {
+    try {
+        const {userId, flightId} = req.body;
+
+        const usersData = await fs.readFile(dataPath, "utf8");
+        const flightsData = await fs.readFile(flightDataPath, "utf8");
+
+        let users = JSON.parse(usersData);
+        let flights = JSON.parse(flightsData);
+
+        let flight = flights.find(flight => flight.flightId === flightId);
+        let user = users.find(user => user.userId === userId);
+
+        if (!flight || !user) {
+            return res.status(404).send();
+        }
+
+        flight.passengers.push(userId);
+        user.bookedFlights.push(flightId);
+
+        await fs.writeFile(flightDataPath, JSON.stringify(flights, null, 2));
+        await fs.writeFile(dataPath, JSON.stringify(users, null, 2));
+
+        return res.status(200).send();
+    } catch (error) {
+        console.error(error.message)
+    }
+});
+
 app.get('/sign-up', (req, res) => {
     res.sendFile('pages/sign-up.html', { root: serverPublic })
 })
@@ -223,7 +252,6 @@ app.post('/login', async (req, res) => {
 
                 // delete data the client should not store
                 delete user.password;
-                delete user.userId;
 
                 // send user object to client for storing in localstorage
                 return res.status(200).send(user);

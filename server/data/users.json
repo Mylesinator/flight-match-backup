@@ -5,7 +5,11 @@
     "username": "Admin",
     "email": "defaultadmin@email.com",
     "password": "$2b$10$JlNyPexkdVIYsHIMRL.XHeRncFy5AdETshnLucUvOpruV/3l0dZ4q",
-    "bookedFlights": []
+    "bookedFlights": [
+      1,
+      1,
+      2
+    ]
   },
   {
     "userId": 2,

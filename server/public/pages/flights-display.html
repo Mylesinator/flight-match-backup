@@ -234,8 +234,10 @@ ul {
           const flights = await fetchFlights();
           if (Array.isArray(flights) && flights.length > 0) {
             flights.forEach((flight) => {
-              const row = `<tr><td>${flight.origin}</td><td>${flight.destination}</td><td>${flight.date}</td><td>${flight.time}</td><td><button>BOOK</button></td></tr>`;
+              const row = `<tr><td>${flight.origin}</td><td>${flight.destination}</td><td>${flight.date}</td><td>${flight.time}</td><td><button type="button" flightid="${flight.flightId}" class="book-flight-btn">BOOK</button></td></tr>`;
               tableBody.innerHTML += row;
+              addBookFlightEventListeners();
+              return true;
             });
           }
         } catch (error) {}
@@ -262,8 +264,9 @@ ul {
 
                 if (results.length > 0) {
                     results.forEach(item => {
-                      const row = `<tr><td>${item.origin}</td><td>${item.destination}</td><td>${item.date}</td><td>${item.time}</td><td><button>BOOK</button></td></tr>`;
+                      const row = `<tr><td>${item.origin}</td><td>${item.destination}</td><td>${item.date}</td><td>${item.time}</td><td><button type="button" flightid="${item.flightId}" class="book-flight-btn">BOOK</button></td></tr>`;
                       resultsDisplay.innerHTML += row;
+                      addBookFlightEventListeners();
                     });
                 }
             } catch (error) {
@@ -274,6 +277,42 @@ ul {
       const searchInput = document.getElementById("search-input");
       searchInput.addEventListener("keydown", searchFlights);
       searchInput.addEventListener("keyup", searchFlights);
+
+      function addBookFlightEventListeners() {
+        const bookButtons = document.querySelectorAll(".book-flight-btn");
+      console.log(bookButtons)
+
+      bookButtons.forEach(btn => {
+        btn.addEventListener("click", async () => {
+          console.log("clicked")
+          try {
+            const flightId = parseInt(btn.getAttribute("flightid"));
+            const userId = JSON.parse(localStorage.getItem("activeUser")).userId;
+
+            const response = await fetch("/user/add-flight", {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({userId, flightId})
+            });
+
+            if (!response.ok) {
+              return
+            }
+
+            let activeUser = JSON.parse(localStorage.getItem("activeUser"));
+
+            if (activeUser) {
+              activeUser.bookedFlights.push(flightId);
+              localStorage.setItem("activeUser", JSON.stringify(activeUser, null, 2));
+            }
+          } catch (error) {
+            console.error(error.message);
+          }
+        });
+      });
+      }
 
       document.addEventListener("DOMContentLoaded", renderFlights);
     </script>

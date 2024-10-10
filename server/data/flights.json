@@ -5,7 +5,10 @@
     "destination": "Houston, Texas",
     "date": "10/24/2024",
     "time": "08:30",
-    "passengers": []
+    "passengers": [
+      1,
+      1
+    ]
   },
   {
     "flightId": 2,
@@ -13,7 +16,9 @@
     "destination": "Chicago, Illinois",
     "date": "8/23/1912",
     "time": "03:45",
-    "passengers": []
+    "passengers": [
+      1
+    ]
   },
   {
     "flightId": 3,
